@@ -1,35 +1,79 @@
+import debounce from 'lodash.debounce';
+import { error } from '@pnotify/core';
+import '@pnotify/core/dist/BrightTheme.css';
+
+
+import countryCardTpl from './templates/country-card.hbs';
+import countryListTpl from './templates/country-list.hbs';
+import fetchCountry from './fetchCountries'
 import './sass/main.scss';
-import countriCardTpl from './templates/countri-card.hbs';
+
 
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
     searchForm: document.querySelector('.js-search-form')
 }
 
-refs.searchForm.addEventListener('input', onSearch)
+refs.searchForm.addEventListener('input', debounce(onSearch, 500));
+
 
 function onSearch(e) {
+    // resetPage()
     e.preventDefault();
 
-    // const form = e.currentTarget;
-    // const searchQuery = form.elements.query.value
+    const form = e.target;
+    const searchQuery = form.value;
+    console.log(searchQuery);
 
-    fetchCountri('Col')
-    .then(renderCountriCard)
-    .catch(error => { console.log(error)});
+    fetchCountry(searchQuery) 
+        .then(arrayOfCountries => {
+            if (arrayOfCountries.length > 10) {
+                error({
+                    text: 'Too many matches found. Please enter a more specific query!',
+                    mode: 'light',
+                    closer: true,
+                    sticker: false,
+                    hide: true,
+                    delay: 2000,
+                });
+                return;
+            }
+
+            if (arrayOfCountries.length > 1 && arrayOfCountries.length < 10) {
+                renderCountryList(arrayOfCountries);
+                return;
+            }
+
+            if (arrayOfCountries.length = 1) {
+                renderCountryCard(arrayOfCountries);
+                return;
+            }
+    })
+        .catch(onFetchError)
+        // .finally(()=>form.reset());
 }
 
-
-
-
-function fetchCountri(countryAlpha) {
-    return fetch(`https://restcountries.eu/rest/v2/alpha/${countryAlpha}`)
-        .then(response => {
-            return response.json();
-        }); 
-    }
-
-function renderCountriCard(countri) {
-        const markup = countriCardTpl(countri);
+function renderCountryCard(country) {
+        const markup = countryCardTpl(country);
         refs.cardContainer.innerHTML = markup;
-    }
+}
+
+function renderCountryList(countries) {
+        const markupList = countryListTpl(countries);
+        refs.cardContainer.innerHTML = markupList;
+}
+
+// function resetPage() {
+//   refs.cardContainer.innerHTML = '';
+// }
+    
+function onFetchError(error) {
+     error({
+    text: `${err}`,
+    mode: 'dark',
+    closer: true,
+    sticker: false,
+    hide: true,
+    delay: 2000,
+  });
+}
