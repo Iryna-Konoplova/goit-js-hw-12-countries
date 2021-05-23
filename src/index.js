@@ -18,14 +18,14 @@ refs.searchForm.addEventListener('input', debounce(onSearch, 500));
 
 
 function onSearch(e) {
-    // resetPage()
+    resetPage()
     e.preventDefault();
 
     const form = e.target;
     const searchQuery = form.value;
     console.log(searchQuery);
 
-    fetchCountry(searchQuery) 
+    fetchCountry(searchQuery)
         .then(arrayOfCountries => {
             if (arrayOfCountries.length > 10) {
                 error({
@@ -48,9 +48,8 @@ function onSearch(e) {
                 renderCountryCard(arrayOfCountries);
                 return;
             }
-    })
-        .catch(onFetchError)
-        // .finally(()=>form.reset());
+        })
+        .catch(onFetchError);
 }
 
 function renderCountryCard(country) {
@@ -63,14 +62,14 @@ function renderCountryList(countries) {
         refs.cardContainer.innerHTML = markupList;
 }
 
-// function resetPage() {
-//   refs.cardContainer.innerHTML = '';
-// }
+function resetPage() {
+  refs.cardContainer.innerHTML = '';
+}
     
-function onFetchError(error) {
-     error({
-    text: `${err}`,
-    mode: 'dark',
+function onFetchError(er) {
+  error({
+    text: `${er}`,
+    mode: 'light',
     closer: true,
     sticker: false,
     hide: true,

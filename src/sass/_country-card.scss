@@ -1,0 +1,36 @@
+input {
+  display: flex;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  width: 300px;
+}
+
+.card-title {
+  font-size: 70px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+}
+
+.card-body {
+  width: 40%;
+  padding-left: 40px;
+  padding-right: 20px;
+  text-align: left;
+  font-size: 36px;
+}
+
+.flag {
+  width: 600px;
+  height: 400px;
+}
+
+.list-country {
+  font-size: 26px;
+}

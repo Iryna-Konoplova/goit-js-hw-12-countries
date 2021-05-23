@@ -7,14 +7,7 @@ export default function fetchCountries(searchQuery) {
         .then(response => {
             // console.log(response);
             if (response.ok) return response.json();
-    throw new Error('Error fatching data');
+            throw new Error('Error fatching data');
         }); 
 }
     
-// export default function fetchCountry(searchQuery) {
-//   return fetch(`${BASE_URL}/name/${searchQuery}`).then(response => {
-//     // resetPage();
-//     if (response.ok) return response.json();
-//     throw new Error('Error fatching data');
-//   });
-// }
