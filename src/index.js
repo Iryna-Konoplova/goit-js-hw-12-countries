@@ -50,7 +50,7 @@ function onSearch(e) {
             }
         })
         .catch(onFetchError)
-        .finally(() =>searchQuery.reset());     
+        .finally(() =>form.reset());     
 }
 
 function renderCountryCard(country) {
