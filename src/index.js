@@ -2,7 +2,6 @@ import debounce from 'lodash.debounce';
 import { error } from '@pnotify/core';
 import '@pnotify/core/dist/BrightTheme.css';
 
-
 import countryCardTpl from './templates/country-card.hbs';
 import countryListTpl from './templates/country-list.hbs';
 import fetchCountry from './fetchCountries'
@@ -11,20 +10,20 @@ import './sass/main.scss';
 
 const refs = {
     cardContainer: document.querySelector('.js-card-container'),
-    searchForm: document.querySelector('.js-search-form')
+    searchForm: document.querySelector('.js-search-form'),
+    form: document.querySelector('.search-form')
 }
 
 refs.searchForm.addEventListener('input', debounce(onSearch, 500));
 
-
 function onSearch(e) {
     resetPage()
     e.preventDefault();
-
+    
     const form = e.target;
-    const searchQuery = form.value;
-    console.log(searchQuery);
-
+    const searchQuery = form.value.trim();
+    // console.log(searchQuery.trim());
+    
     fetchCountry(searchQuery)
         .then(arrayOfCountries => {
             if (arrayOfCountries.length > 10) {
@@ -36,35 +35,37 @@ function onSearch(e) {
                     hide: true,
                     delay: 2000,
                 });
-                return;
+                return;   
             }
 
             if (arrayOfCountries.length >= 2 && arrayOfCountries.length <= 10) {
-                renderCountryList(arrayOfCountries);  
+                renderCountryList(arrayOfCountries);
                 return;
             }
 
             if (arrayOfCountries.length = 1) {
-                renderCountryCard(arrayOfCountries);  
-                return;
-            }
+                renderCountryCard(arrayOfCountries);
+                return;  
+            }    
         })
-        .catch(onFetchError)
-        .finally(() =>form.reset());     
+        .catch(onFetchError);
+        
+    resetForm();
 }
 
 function renderCountryCard(country) {
-        const markup = countryCardTpl(country);
-        refs.cardContainer.innerHTML = markup;
+    const markup = countryCardTpl(country);
+    refs.cardContainer.innerHTML = markup;
+    
 }
 
 function renderCountryList(countries) {
-        const markupList = countryListTpl(countries);
-        refs.cardContainer.innerHTML = markupList;
+    const markupList = countryListTpl(countries);
+    refs.cardContainer.innerHTML = markupList;
 }
 
 function resetPage() {
-  refs.cardContainer.innerHTML = '';
+    refs.cardContainer.innerHTML = '';
 }
     
 function onFetchError(er) {
@@ -78,3 +79,6 @@ function onFetchError(er) {
   });
 }
 
+function resetForm() {
+    refs.form.reset();
+}
