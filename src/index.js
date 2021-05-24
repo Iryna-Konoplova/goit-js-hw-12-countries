@@ -39,17 +39,18 @@ function onSearch(e) {
                 return;
             }
 
-            if (arrayOfCountries.length > 1 && arrayOfCountries.length < 10) {
-                renderCountryList(arrayOfCountries);
+            if (arrayOfCountries.length >= 2 && arrayOfCountries.length <= 10) {
+                renderCountryList(arrayOfCountries);  
                 return;
             }
 
             if (arrayOfCountries.length = 1) {
-                renderCountryCard(arrayOfCountries);
+                renderCountryCard(arrayOfCountries);  
                 return;
             }
         })
-        .catch(onFetchError);
+        .catch(onFetchError)
+        .finally(() =>searchQuery.reset());     
 }
 
 function renderCountryCard(country) {
@@ -76,3 +77,4 @@ function onFetchError(er) {
     delay: 2000,
   });
 }
+
