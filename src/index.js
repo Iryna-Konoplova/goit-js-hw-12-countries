@@ -22,9 +22,9 @@ function onSearch(e) {
     
     const form = e.target;
     const searchQuery = form.value.trim();
-    // console.log(searchQuery.trim());
     
-    fetchCountry(searchQuery)
+    if (searchQuery !== '') {
+         fetchCountry(searchQuery)
         .then(arrayOfCountries => {
             if (arrayOfCountries.length > 10) {
                 error({
@@ -33,7 +33,7 @@ function onSearch(e) {
                     closer: true,
                     sticker: false,
                     hide: true,
-                    delay: 2000,
+                    delay: 1000,
                 });
                 return;   
             }
@@ -49,7 +49,8 @@ function onSearch(e) {
             }    
         })
         .catch(onFetchError);
-        
+
+    }  
     resetForm();
 }
 
@@ -75,7 +76,7 @@ function onFetchError(er) {
     closer: true,
     sticker: false,
     hide: true,
-    delay: 2000,
+    delay: 1000,
   });
 }
 
