@@ -4,6 +4,7 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 import countryCardTpl from './templates/country-card.hbs';
 import countryListTpl from './templates/country-list.hbs';
+import countrySelectListTpl from './templates/select-country.hbs';
 import fetchCountry from './fetchCountries'
 import './sass/main.scss';
 
@@ -25,8 +26,12 @@ function onSearch(e) {
     
     if (searchQuery !== '') {
          fetchCountry(searchQuery)
-        .then(arrayOfCountries => {
+             .then(arrayOfCountries => {
+                //  const markupSelect = countrySelectListTpl(arrayOfCountries);
+                //  refs.form.innerHTML = markupSelect;
+            
             if (arrayOfCountries.length > 10) {
+                // renderSelectList(arrayOfCountries)
                 error({
                     text: 'Too many matches found. Please enter a more specific query!',
                     mode: 'light',
@@ -39,20 +44,24 @@ function onSearch(e) {
             }
 
             if (arrayOfCountries.length >= 2 && arrayOfCountries.length <= 10) {
+                // renderSelectList(arrayOfCountries)
                 renderCountryList(arrayOfCountries);
                 return;
             }
 
             if (arrayOfCountries.length = 1) {
+                // renderSelectList(arrayOfCountries)
                 renderCountryCard(arrayOfCountries);
                 resetForm();
                 return;  
-            }    
+            }
+            
         })
         .catch(onFetchError);
 
     }  
-    // resetForm();
+    
+    
 }
 
 function renderCountryCard(country) {
@@ -65,6 +74,11 @@ function renderCountryList(countries) {
     const markupList = countryListTpl(countries);
     refs.cardContainer.innerHTML = markupList;
 }
+
+// function renderSelectList(countries) {
+//     const markupSelect = countrySelectListTpl(countries);
+//     refs.form.innerHTML = markupSelect;
+// }
 
 function resetPage() {
     refs.cardContainer.innerHTML = '';
