@@ -45,13 +45,14 @@ function onSearch(e) {
 
             if (arrayOfCountries.length = 1) {
                 renderCountryCard(arrayOfCountries);
+                resetForm();
                 return;  
             }    
         })
         .catch(onFetchError);
 
     }  
-    resetForm();
+    // resetForm();
 }
 
 function renderCountryCard(country) {
@@ -78,6 +79,7 @@ function onFetchError(er) {
     hide: true,
     delay: 1000,
   });
+  resetForm()  
 }
 
 function resetForm() {
